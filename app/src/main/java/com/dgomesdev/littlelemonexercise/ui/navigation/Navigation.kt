@@ -14,15 +14,15 @@ import com.dgomesdev.littlelemonexercise.ui.composables.Profile
 fun NavGraph(
     modifier: Modifier = Modifier,
     navController: NavHostController,
-    startDestination: String = Destination.OnBoarding.route
+    startDestination: String = Destination.Onboarding.route
 ) {
     NavHost(
         navController = navController,
         startDestination = startDestination,
         builder = {
             composable(
-                route = Destination.OnBoarding.route,
-                arguments = Destination.OnBoarding.arguments
+                route = Destination.Onboarding.route,
+                arguments = Destination.Onboarding.arguments
             ) {
                 Onboarding()
             }
