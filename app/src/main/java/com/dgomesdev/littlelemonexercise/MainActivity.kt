@@ -9,6 +9,7 @@ import com.dgomesdev.littlelemonexercise.ui.navigation.NavGraph
 import com.dgomesdev.littlelemonexercise.ui.theme.LittleLemonExerciseTheme
 
 class MainActivity : ComponentActivity() {
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
