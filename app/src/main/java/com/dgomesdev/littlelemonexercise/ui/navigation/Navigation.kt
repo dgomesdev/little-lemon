@@ -3,9 +3,11 @@ package com.dgomesdev.littlelemonexercise.ui.navigation
 import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.navigation.NavHostController
-import androidx.navigation.compose.NavHost
-import androidx.navigation.compose.composable
+import androidx.navigation3.runtime.NavBackStack
+import androidx.navigation3.runtime.NavKey
+import androidx.navigation3.runtime.entryProvider
+import androidx.navigation3.runtime.rememberNavBackStack
+import androidx.navigation3.ui.NavDisplay
 import com.dgomesdev.littlelemonexercise.ui.composables.Home
 import com.dgomesdev.littlelemonexercise.ui.composables.Onboarding
 import com.dgomesdev.littlelemonexercise.ui.composables.Profile
@@ -13,31 +15,20 @@ import com.dgomesdev.littlelemonexercise.ui.composables.Profile
 @Composable
 fun NavGraph(
     modifier: Modifier = Modifier,
-    navController: NavHostController,
-    startDestination: String = Destination.Onboarding.route
+    startDestination: NavKey = Destination.Onboarding,
+    backStack: NavBackStack<NavKey> = rememberNavBackStack(startDestination)
 ) {
-    NavHost(
-        navController = navController,
-        startDestination = startDestination,
-        builder = {
-            composable(
-                route = Destination.Onboarding.route,
-                arguments = Destination.Onboarding.arguments
-            ) {
+    NavDisplay(
+        backStack = backStack,
+        onBack = { backStack.removeLastOrNull() },
+        entryProvider = entryProvider {
+            entry<Destination.Onboarding> {
                 Onboarding()
             }
-
-            composable(
-                route = Destination.Home.route,
-                arguments = Destination.Home.arguments
-            ) {
+            entry<Destination.Home> {
                 Home()
             }
-
-            composable(
-                route = Destination.Profile.route,
-                arguments = Destination.Profile.arguments
-            ) {
+            entry<Destination.Profile> {
                 Profile()
             }
         },

@@ -1,15 +1,9 @@
 package com.dgomesdev.littlelemonexercise.ui.navigation
 
-import androidx.navigation.NamedNavArgument
+import androidx.navigation3.runtime.NavKey
 
-sealed class Destination(val route: String, val arguments: List<NamedNavArgument> = emptyList()) {
-    data object Onboarding: Destination(Route.ONBOARDING)
-    data object Home: Destination(Route.HOME)
-    data object Profile: Destination(Route.PROFILE)
-}
-
-private object Route {
-    const val ONBOARDING = "onboarding"
-    const val HOME = "home"
-    const val PROFILE = "profile"
+sealed interface Destination : NavKey {
+    data object Onboarding : Destination
+    data object Home : Destination
+    data object Profile : Destination
 }
