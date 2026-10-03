@@ -2,11 +2,17 @@ package com.dgomesdev.littlelemonexercise.ui.viewmodel
 
 import android.util.Patterns
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
+import com.dgomesdev.littlelemonexercise.domain.model.User
+import com.dgomesdev.littlelemonexercise.domain.repository.DataRepository
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
+import kotlinx.coroutines.launch
 
-class OnboardingViewModel : ViewModel() {
+class OnboardingViewModel(
+    private val repository: DataRepository
+) : ViewModel() {
     private val _firstName = MutableStateFlow("")
     val firstName = _firstName.asStateFlow()
 
@@ -48,28 +54,42 @@ class OnboardingViewModel : ViewModel() {
 
     private fun validateFirstName() {
         _isFirstNameValid.update {
-            if (_firstName.value.isBlank() || _firstName.value.length < 2) false
-            else _firstName.value.all { it.isLetter() }
+            !(_firstName.value.isBlank() || _firstName.value.length < 2)
+                    && _firstName.value.all { it.isLetter() }
         }
     }
 
     private fun validateLastName() {
         _isLastNameValid.update {
-            if (_lastName.value.isBlank() || _lastName.value.length < 2) false
-            else _lastName.value.all { it.isLetter() }
+            !(_lastName.value.isBlank() || _lastName.value.length < 2)
+                    && _lastName.value.all { it.isLetter() }
         }
     }
 
     private fun validateEmail() {
         _isEmailValid.update {
-            if (_email.value.isBlank()) false
-            else Patterns.EMAIL_ADDRESS.matcher(_email.value).matches()
+            _email.value.isNotBlank()
+                    && Patterns.EMAIL_ADDRESS.matcher(_email.value).matches()
         }
     }
 
     private fun validateForm() {
         _isFormValid.update {
             _isFirstNameValid.value && _isLastNameValid.value && _isEmailValid.value
+        }
+    }
+
+    fun saveUser() {
+        if (_isFormValid.value) {
+            viewModelScope.launch {
+                repository.saveUser(
+                    User(
+                        firstName = _firstName.value,
+                        lastName = _lastName.value,
+                        email = _email.value
+                    )
+                )
+            }
         }
     }
 }

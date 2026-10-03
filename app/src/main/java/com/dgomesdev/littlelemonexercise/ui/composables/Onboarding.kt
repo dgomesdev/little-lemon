@@ -81,7 +81,7 @@ fun Onboarding(
             isError = isEmailValid
         )
         Button(
-            onClick = { },
+            onClick = { viewModel.saveUser() },
             modifier = modifier,
             enabled = isFormValid
         ) {
