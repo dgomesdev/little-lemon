@@ -6,9 +6,7 @@ import com.dgomesdev.littlelemonexercise.domain.model.User
 class DataRepository(
     private val dataPreferences: DataPreferences
 ) {
-    suspend fun getUser(): User {
-        return dataPreferences.getUser()
-    }
+    fun getUser() = dataPreferences.getUser()
 
     suspend fun saveUser(user: User) {
         dataPreferences.saveUser(user)

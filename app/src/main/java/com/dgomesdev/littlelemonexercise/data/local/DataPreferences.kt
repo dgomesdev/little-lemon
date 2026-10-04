@@ -6,7 +6,6 @@ import androidx.datastore.preferences.core.stringPreferencesKey
 import androidx.datastore.preferences.preferencesDataStore
 import com.dgomesdev.littlelemonexercise.domain.model.User
 import kotlinx.coroutines.flow.map
-import kotlinx.coroutines.flow.single
 
 val Context.dataStore by preferencesDataStore(name = "user_data")
 
@@ -25,14 +24,14 @@ class DataPreferences(private val context: Context) {
         }
     }
 
-    suspend fun getUser(): User = context.dataStore.data
+    fun getUser() = context.dataStore.data
         .map { preferences ->
             User(
                 preferences[FIRST_NAME]?: "",
                 preferences[LAST_NAME]?: "",
                 preferences[EMAIL]?: ""
             )
-        }.single()
+        }
 
     suspend fun logOut() {
         context.dataStore.edit { preferences ->
