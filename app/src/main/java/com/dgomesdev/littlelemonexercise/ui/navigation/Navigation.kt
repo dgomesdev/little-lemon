@@ -39,20 +39,33 @@ fun NavGraph(
         } else {
             Destination.Home
         }
-
         val backStack = rememberNavBackStack(startDestination)
         NavDisplay(
             backStack = backStack,
             onBack = { backStack.removeLastOrNull() },
             entryProvider = entryProvider {
                 entry<Destination.Onboarding> {
-                    Onboarding()
+                    Onboarding(
+                        onLogIn = {
+                            backStack.clear()
+                            backStack.add(Destination.Home)
+                        }
+                    )
                 }
                 entry<Destination.Home> {
-                    Home()
+                    Home(onNavigation = {
+                        backStack.add(Destination.Profile)
+                    })
                 }
                 entry<Destination.Profile> {
-                    Profile()
+                    Profile(
+                        user = (userState as UserState.Success).user,
+                        onLogOut = {
+                            viewModel.logOut()
+                            backStack.clear()
+                            backStack.add(Destination.Onboarding)
+                        }
+                    )
                 }
             },
             modifier = modifier.statusBarsPadding()

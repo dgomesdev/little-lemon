@@ -17,7 +17,7 @@ import com.dgomesdev.littlelemonexercise.domain.model.User
 fun Profile(
     modifier: Modifier = Modifier,
     user: User,
-    onLogout: () -> Unit
+    onLogOut: () -> Unit
 ) {
     Column(
         modifier = modifier.fillMaxSize(),
@@ -41,7 +41,7 @@ fun Profile(
             text = user.email
         )
         Button(
-            onClick = { onLogout() }
+            onClick = { onLogOut() }
         ) {
             Text("Log out")
         }

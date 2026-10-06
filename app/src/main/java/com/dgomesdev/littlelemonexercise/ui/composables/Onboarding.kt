@@ -26,7 +26,8 @@ import org.koin.androidx.compose.koinViewModel
 @Composable
 fun Onboarding(
     modifier: Modifier = Modifier,
-    viewModel: OnboardingViewModel = koinViewModel()
+    viewModel: OnboardingViewModel = koinViewModel(),
+    onLogIn: () -> Unit = {}
 ) {
     val firstName by viewModel.firstName.collectAsState()
     val lastName by viewModel.lastName.collectAsState()
@@ -81,7 +82,10 @@ fun Onboarding(
             isError = isEmailValid
         )
         Button(
-            onClick = { viewModel.saveUser() },
+            onClick = {
+                viewModel.saveUser()
+                onLogIn()
+            },
             modifier = modifier,
             enabled = isFormValid
         ) {

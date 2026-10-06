@@ -45,13 +45,13 @@ class ProfileViewModel(
     fun logOut() {
         viewModelScope.launch {
             repository.logOut()
-            _user.value = UserState.Success(User.empty())
+            _user.value = UserState.Empty
         }
     }
 }
 
-sealed class UserState(user: User = User.empty()) {
+sealed class UserState {
     data object Loading : UserState()
-    data class Success(val user: User) : UserState(user = user)
+    data class Success(val user: User) : UserState()
     data object Empty : UserState()
 }
