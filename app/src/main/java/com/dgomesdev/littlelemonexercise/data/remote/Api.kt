@@ -13,6 +13,8 @@ class Api(
             httpClient.get(URL).body<MenuData>()
         } catch (e: Exception) {
             throw e
+        } finally {
+            httpClient.close()
         }
     }
 
