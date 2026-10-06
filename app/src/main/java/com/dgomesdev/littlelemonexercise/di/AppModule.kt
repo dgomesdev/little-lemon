@@ -1,6 +1,8 @@
 package com.dgomesdev.littlelemonexercise.di
 
+import androidx.room3.Room
 import com.dgomesdev.littlelemonexercise.data.local.DataPreferences
+import com.dgomesdev.littlelemonexercise.data.local.Database
 import com.dgomesdev.littlelemonexercise.data.remote.Api
 import com.dgomesdev.littlelemonexercise.domain.repository.DataRepository
 import com.dgomesdev.littlelemonexercise.ui.viewmodel.OnboardingViewModel
@@ -12,7 +14,8 @@ import io.ktor.http.ContentType
 import io.ktor.serialization.kotlinx.json.json
 import kotlinx.serialization.json.Json
 import org.koin.android.ext.koin.androidContext
-import org.koin.core.module.dsl.viewModel
+import org.koin.core.module.dsl.singleOf
+import org.koin.core.module.dsl.viewModelOf
 import org.koin.dsl.module
 
 val appModule = module {
@@ -28,9 +31,18 @@ val appModule = module {
             }
         }
     }
-    single { Api(get()) }
+    single {
+        Room.databaseBuilder<Database>(
+            context = androidContext(),
+            name = "little_lemon.db"
+        )
+            .fallbackToDestructiveMigration()
+            .build()
+    }
+    single { get<Database>().menuDao() }
     single { DataPreferences(androidContext()) }
-    single { DataRepository(get(), get()) }
-    viewModel { OnboardingViewModel(get()) }
-    viewModel { ProfileViewModel(get()) }
+    singleOf(::Api)
+    singleOf(::DataRepository)
+    viewModelOf(::OnboardingViewModel)
+    viewModelOf(::ProfileViewModel)
 }
