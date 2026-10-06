@@ -9,14 +9,11 @@ class Api(
     val httpClient: HttpClient,
 ) {
     suspend fun getMenu() = runCatching {
-        try {
-            httpClient.get(URL).body<MenuData>()
-        } catch (e: Exception) {
-            throw e
-        }
+        httpClient.get(URL).body<MenuData>()
     }
 
     companion object {
-        const val URL = "https://raw.githubusercontent.com/Meta-Mobile-Developer-PC/Working-With-Data-API/main/menu.json"
+        const val URL =
+            "https://raw.githubusercontent.com/Meta-Mobile-Developer-PC/Working-With-Data-API/main/menu.json"
     }
 }
