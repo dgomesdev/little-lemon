@@ -2,9 +2,10 @@ package com.dgomesdev.littlelemonexercise.di
 
 import androidx.room3.Room
 import com.dgomesdev.littlelemonexercise.data.local.DataPreferences
-import com.dgomesdev.littlelemonexercise.data.local.Database
+import com.dgomesdev.littlelemonexercise.data.local.MenuDatabase
 import com.dgomesdev.littlelemonexercise.data.remote.Api
 import com.dgomesdev.littlelemonexercise.domain.repository.DataRepository
+import com.dgomesdev.littlelemonexercise.ui.viewmodel.HomeViewModel
 import com.dgomesdev.littlelemonexercise.ui.viewmodel.OnboardingViewModel
 import com.dgomesdev.littlelemonexercise.ui.viewmodel.ProfileViewModel
 import io.ktor.client.HttpClient
@@ -32,17 +33,18 @@ val appModule = module {
         }
     }
     single {
-        Room.databaseBuilder<Database>(
+        Room.databaseBuilder<MenuDatabase>(
             context = androidContext(),
             name = "little_lemon.db"
         )
             .fallbackToDestructiveMigration()
             .build()
     }
-    single { get<Database>().menuDao() }
+    single { get<MenuDatabase>().menuDao() }
     single { DataPreferences(androidContext()) }
     singleOf(::Api)
     singleOf(::DataRepository)
     viewModelOf(::OnboardingViewModel)
     viewModelOf(::ProfileViewModel)
+    viewModelOf(::HomeViewModel)
 }

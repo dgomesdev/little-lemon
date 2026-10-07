@@ -63,7 +63,7 @@ fun Onboarding(
                 viewModel.updateFirstName(it)
             },
             label = { Text("First Name") },
-            isError = isFirstNameValid
+            isError = !isFirstNameValid && firstName.isNotBlank()
         )
         TextField(
             value = lastName,
@@ -71,7 +71,7 @@ fun Onboarding(
                 viewModel.updateLastName(it)
             },
             label = { Text("Last Name") },
-            isError = isLastNameValid
+            isError = !isLastNameValid && lastName.isNotBlank()
         )
         TextField(
             value = email,
@@ -79,14 +79,14 @@ fun Onboarding(
                 viewModel.updateEmail(it)
             },
             label = { Text("Email") },
-            isError = isEmailValid
+            isError = !isEmailValid && email.isNotBlank()
         )
         Button(
             onClick = {
                 viewModel.saveUser()
                 onLogIn()
             },
-            modifier = modifier,
+            modifier = Modifier.fillMaxWidth(),
             enabled = isFormValid
         ) {
             Text("Register")

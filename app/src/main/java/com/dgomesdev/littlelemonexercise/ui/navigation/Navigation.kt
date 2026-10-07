@@ -13,6 +13,7 @@ import androidx.navigation3.runtime.NavKey
 import androidx.navigation3.runtime.entryProvider
 import androidx.navigation3.runtime.rememberNavBackStack
 import androidx.navigation3.ui.NavDisplay
+import com.dgomesdev.littlelemonexercise.domain.model.User
 import com.dgomesdev.littlelemonexercise.ui.composables.Home
 import com.dgomesdev.littlelemonexercise.ui.composables.Onboarding
 import com.dgomesdev.littlelemonexercise.ui.composables.Profile
@@ -58,8 +59,9 @@ fun NavGraph(
                     })
                 }
                 entry<Destination.Profile> {
+                    val user = (userState as? UserState.Success)?.user ?: User.empty()
                     Profile(
-                        user = (userState as UserState.Success).user,
+                        user = user,
                         onLogOut = {
                             viewModel.logOut()
                             backStack.clear()
